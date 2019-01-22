@@ -4,8 +4,15 @@
 	int column = 1; 
 %}
 
+Digit [0-9]
+Number (Digit)+
+
 
 %%
+
+" " 		{column = column + strlen(yytext);} 
+"\t"		{column = column + strlen(yytext);}
+"\n"		{column = column + strlen(yytext);}
 
 	/* Reserved Keywords */
 
@@ -35,9 +42,35 @@ or          {printf("OR\n"); column = column + strlen(yytext);}
 not         {printf("NOT\n"); column = column + strlen(yytext);}
 true		{printf("TRUE\n"); column = column + strlen(yytext);}
 false		{printf("FALSE\n"); column = column + strlen(yytext);}
+return		{printf("RETURN\n"); column = column + strlen(yytext);}
 
 	/* Arithmetic */
 
+"-"			{printf("SUB\n"); column = column + strlen(yytext);}
+"+"			{printf("ADD\n"); column = column + strlen(yytext);}
+"*"			{printf("MULT\n"); column = column + strlen(yytext);}
+"/"			{printf("DIV\n"); column = column + strlen(yytext);}
+"%"			{printf("MOD\n"); column = column + strlen(yytext);}
+
+	/* Comparison */
+
+"=="		{printf("EQ\n"); column = column + strlen(yytext);}
+"<>"		{printf("NEQ\n"); column = column + strlen(yytext);}
+"<"			{printf("LT\n"); column = column + strlen(yytext);}
+">"			{printf("GT\n"); column = column + strlen(yytext);}
+"<="		{printf("LTE\n"); column = column + strlen(yytext);}
+">="		{printf("GTE\n"); column = column + strlen(yytext);}
+
+	/* Special Symbols */
+
+";"			{printf("SEMICOLON\n"); column = column + strlen(yytext);}
+":"			{printf("COLON\n"); column = column + strlen(yytext);}
+","			{printf("COMMA\n"); column = column + strlen(yytext);}
+"("			{printf("L_PAREN\n"); column = column + strlen(yytext);}
+")"			{printf("R_PAREN\n"); column = column + strlen(yytext);}
+"["			{printf("L_SQUARE_BRACKET\n"); column = column + strlen(yytext);}
+"]"			{printf("R_SQUARE_BRACKET\n"); column = column + strlen(yytext);}
+":="		{printf("ASSIGN\n"); column = column + strlen(yytext);}
 
 
 %%
