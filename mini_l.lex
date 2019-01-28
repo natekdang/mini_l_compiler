@@ -11,6 +11,11 @@
 
 Digit [0-9]
 Number ({Digit})+
+Letter [a-zA-Z]
+Underscore[_]
+
+Comment [##.]* 
+Ident {Letter}((({Letter}|{Digit})|{Underscore})*({Letter}|{Digit})+)*
 
 
 %%
@@ -19,7 +24,6 @@ Number ({Digit})+
 "\t"		{column = column + strlen(yytext);}
 "\n"		{row = row + 1; column = 1;}
 
-{Number} 	{printf("NUMBER %s\n", yytext); column = column + strlen(yytext);}
 
 	/* Reserved Keywords */
 
@@ -79,5 +83,10 @@ return		{printf("RETURN\n"); column = column + strlen(yytext);}
 "]"			{printf("R_SQUARE_BRACKET\n"); column = column + strlen(yytext);}
 ":="		{printf("ASSIGN\n"); column = column + strlen(yytext);}
 
+	/* Identifiers and Error Handling has to be here or rest of rules don't match */
+
+{Comment}	{row = row + 1; column = 1;}
+{Number} 	{printf("NUMBER %s\n", yytext); column = column + strlen(yytext);}
+{Ident}		{printf("IDENT %s\n", yytext); column = column + strlen(yytext);}
 
 %%
