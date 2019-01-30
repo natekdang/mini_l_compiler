@@ -17,6 +17,10 @@ Underscore[_]
 Comment [##.]* 
 Ident {Letter}((({Letter}|{Digit})|{Underscore})*({Letter}|{Digit})+)*
 
+Error1 {Digit}{Letter}((({Letter}|{Digit})|{Underscore})*({Letter}|{Digit})+)*
+Error2 {Letter}((({Letter}|{Digit})|{Underscore})*({Letter}|{Digit})+)*{Underscore}
+
+
 
 %%
 
@@ -88,5 +92,7 @@ return		{printf("RETURN\n"); column = column + strlen(yytext);}
 {Comment}	{row = row + 1; column = 1;}
 {Number} 	{printf("NUMBER %s\n", yytext); column = column + strlen(yytext);}
 {Ident}		{printf("IDENT %s\n", yytext); column = column + strlen(yytext);}
+{Error1}	{printf("Error at line %d, column %d: Identifier \"%s\" must begin with a letter\n", row, column, yytext); column = column + strlen(yytext); exit(0);}
+{Error2}	{printf("Error at line %d, column %d: Identifier \"%s\" cannot end with an underscore\n", row, column, yytext); column = column + strlen(yytext); exit(0);}
 
 %%
