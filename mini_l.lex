@@ -17,8 +17,8 @@ Underscore [_]
 Comment "##".*
 Ident {Letter}((({Letter}|{Digit})|{Underscore})*({Letter}|{Digit})+)*
 
-Error1 {Digit}{Letter}((({Letter}|{Digit})|{Underscore})*({Letter}|{Digit})+)*
-Error2 {Letter}((({Letter}|{Digit})|{Underscore})*({Letter}|{Digit})+)*{Underscore}
+Error1 {Digit|Underscore}+{Letter}((({Letter}|{Digit})|{Underscore})*({Letter}|{Digit})+)*
+Error2 {Letter}((({Letter}|{Digit})|{Underscore})*({Letter}|{Digit})+)*{Underscore}+
 
 
 %%
