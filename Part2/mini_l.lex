@@ -30,69 +30,70 @@ Error2 {Letter}((({Letter}|{Digit})|{Underscore})*({Letter}|{Digit})+)*{Undersco
 
 	/* Reserved Keywords */
 
-function	{printf("FUNCTION\n"); column = column + strlen(yytext);}
-beginparams	{printf("BEGIN_PARAMS\n"); column = column + strlen(yytext);}
-endparams	{printf("END_PARAMS\n"); column = column + strlen(yytext);}
-beginlocals	{printf("BEGIN_LOCALS\n"); column = column + strlen(yytext);}
-endlocals	{printf("END_LOCALS\n"); column = column + strlen(yytext);}
-beginbody	{printf("BEGIN_BODY\n"); column = column + strlen(yytext);}
-endbody		{printf("END_BODY\n"); column = column + strlen(yytext);}
-integer		{printf("INTEGER\n"); column = column + strlen(yytext);}
-array		{printf("ARRAY\n"); column = column + strlen(yytext);}
-of			{printf("OF\n"); column = column + strlen(yytext);}
-if			{printf("IF\n"); column = column + strlen(yytext);}
-then		{printf("THEN\n"); column = column + strlen(yytext);}
-endif		{printf("ENDIF\n"); column = column + strlen(yytext);}
-else		{printf("ELSE\n"); column = column + strlen(yytext);}
-while		{printf("WHILE\n"); column = column + strlen(yytext);}
-do			{printf("DO\n"); column = column + strlen(yytext);}
-beginloop	{printf("BEGINLOOP\n"); column = column + strlen(yytext);}
-endloop		{printf("ENDLOOP\n"); column = column + strlen(yytext);}
-continue	{printf("CONTINUE\n"); column = column + strlen(yytext);}
-read		{printf("READ\n"); column = column + strlen(yytext);}
-write		{printf("WRITE\n"); column = column + strlen(yytext);}
-and			{printf("AND\n"); column = column + strlen(yytext);}
-or			{printf("OR\n"); column = column + strlen(yytext);}
-not			{printf("NOT\n"); column = column + strlen(yytext);}
-true		{printf("TRUE\n"); column = column + strlen(yytext);}
-false		{printf("FALSE\n"); column = column + strlen(yytext);}
-return		{printf("RETURN\n"); column = column + strlen(yytext);}
+function	{column = column + strlen(yytext); return FUNCTION;}
+beginparams	{column = column + strlen(yytext); return BEGIN_PARAMS;}
+endparams	{column = column + strlen(yytext); return END_PARAMS;}
+beginlocals	{column = column + strlen(yytext); return BEGIN_LOCALS; 
+endlocals	{column = column + strlen(yytext); return END_LOCALS;}
+beginbody	{column = column + strlen(yytext); return BEGIN_BODY;}
+endbody		{column = column + strlen(yytext); return END_BODY;}
+integer		{column = column + strlen(yytext); return INTEGER;}
+array		{column = column + strlen(yytext); return ARRAY;}
+of			{column = column + strlen(yytext); return OF;}
+if			{column = column + strlen(yytext); return IF;}
+then		{column = column + strlen(yytext); return THEN;}
+endif		{column = column + strlen(yytext); return ENDIF;}
+else		{column = column + strlen(yytext); return ELSE;}
+while		{column = column + strlen(yytext); return WHILE;}
+do			{column = column + strlen(yytext); return DO;}
+beginloop	{column = column + strlen(yytext); return BEGINLOOP;}
+endloop		{column = column + strlen(yytext); return ENDLOOP;}
+continue	{column = column + strlen(yytext); return CONTINUE;}
+read		{column = column + strlen(yytext); return READ;}
+write		{column = column + strlen(yytext); return WRITE;}
+and			{column = column + strlen(yytext); return AND;}
+or			{column = column + strlen(yytext); return OR;}
+not			{column = column + strlen(yytext); return NOT;}
+true		{column = column + strlen(yytext); return TRUE;}
+false		{column = column + strlen(yytext); return FALSE;}
+return		{column = column + strlen(yytext); return RETURN;}
 
 	/* Arithmetic */
 
-"-"			{printf("SUB\n"); column = column + strlen(yytext);}
-"+"			{printf("ADD\n"); column = column + strlen(yytext);}
-"*"			{printf("MULT\n"); column = column + strlen(yytext);}
-"/"			{printf("DIV\n"); column = column + strlen(yytext);}
-"%"			{printf("MOD\n"); column = column + strlen(yytext);}
+"-"			{column = column + strlen(yytext); return SUB;}
+"+"			{column = column + strlen(yytext); return ADD;}
+"*"			{column = column + strlen(yytext); return MULT;}
+"/"			{column = column + strlen(yytext); return DIV;}
+"%"			{column = column + strlen(yytext); return MOD;}
 
 	/* Comparison */
 
-"=="		{printf("EQ\n"); column = column + strlen(yytext);}
-"<>"		{printf("NEQ\n"); column = column + strlen(yytext);}
-"<"			{printf("LT\n"); column = column + strlen(yytext);}
-">"			{printf("GT\n"); column = column + strlen(yytext);}
-"<="		{printf("LTE\n"); column = column + strlen(yytext);}
-">="		{printf("GTE\n"); column = column + strlen(yytext);}
+"=="		{column = column + strlen(yytext); return EQ;}
+"<>"		{column = column + strlen(yytext); return NEQ;}
+"<"			{column = column + strlen(yytext); return LT;}
+">"			{column = column + strlen(yytext); return GT;}
+"<="		{column = column + strlen(yytext); return LTE;}
+">="		{column = column + strlen(yytext); return GTE;}
 
 	/* Special Symbols */
 
-";"			{printf("SEMICOLON\n"); column = column + strlen(yytext);}
-":"			{printf("COLON\n"); column = column + strlen(yytext);}
-","			{printf("COMMA\n"); column = column + strlen(yytext);}
-"("			{printf("L_PAREN\n"); column = column + strlen(yytext);}
-")"			{printf("R_PAREN\n"); column = column + strlen(yytext);}
-"["			{printf("L_SQUARE_BRACKET\n"); column = column + strlen(yytext);}
-"]"			{printf("R_SQUARE_BRACKET\n"); column = column + strlen(yytext);}
-":="		{printf("ASSIGN\n"); column = column + strlen(yytext);}
+";"			{column = column + strlen(yytext); return SEMICOLON;}
+":"			{column = column + strlen(yytext); return COLON;}
+","			{column = column + strlen(yytext); return COMMA;}
+"("			{column = column + strlen(yytext); return L_PAREN;}
+")"			{column = column + strlen(yytext); return R_PAREN;}
+"["			{column = column + strlen(yytext); return L_SQUARE_BRACKET;}
+"]"			{column = column + strlen(yytext); return R_SQUARE_BRACKET;}
+":="		{column = column + strlen(yytext); return ASSIGN;}
 
 	/* Identifiers and Error Handling has to be here or rest of rules don't match */
 
 {Comment}	{row = row + 1; column = 1;}
-{Number} 	{printf("NUMBER %s\n", yytext); column = column + strlen(yytext);}
-{Ident}		{printf("IDENT %s\n", yytext); column = column + strlen(yytext);}
-{Error1}	{printf("Error at line %d, column %d: Identifier \"%s\" must begin with a letter\n", row, column, yytext); column = column + strlen(yytext); exit(0);}
-{Error2}	{printf("Error at line %d, column %d: Identifier \"%s\" cannot end with an underscore\n", row, column, yytext); column = column + strlen(yytext); exit(0);}
-.			{printf("Error at line %d, column %d: unrecognized symbol \"%s\"\n", row, column, yytext);} 
+{Number} 	{column = column + strlen(yytext); yyval.val = atoi(yytext); return NUMBER;}
+{Ident}		{column = column + strlen(yytext); yyval.op_val = new std:string(yytext); return IDENT;}
+
+{Error1}	{printf("Error at line %d, column %d: Identifier \"%s\" must begin with a letter\n", row, column, yytext); column = column + strlen(yytext); exit(1);}
+{Error2}	{printf("Error at line %d, column %d: Identifier \"%s\" cannot end with an underscore\n", row, column, yytext); column = column + strlen(yytext); exit(1);}
+.			{printf("Error at line %d, column %d: unrecognized symbol \"%s\"\n", row, column, yytext); exit(1);} 
 
 %%
