@@ -1,8 +1,11 @@
-Program 
+Program:
 
+	Program -> function
+	function -> Function function | empty
 
-
-Function
+Function:
+	
+	Function -> "function"  
 
 
 Declaration
