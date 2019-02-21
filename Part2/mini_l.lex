@@ -89,8 +89,8 @@ return		{column = column + strlen(yytext); return RETURN;}
 	/* Identifiers and Error Handling has to be here or rest of rules don't match */
 
 {Comment}	{row = row + 1; column = 1;}
-{Number} 	{column = column + strlen(yytext); yyval.val = atoi(yytext); return NUMBER;}
-{Ident}		{column = column + strlen(yytext); yyval.op_val = new std:string(yytext); return IDENT;}
+{Number} 	{column = column + strlen(yytext); yylval.int_val = atoi(yytext); return NUMBER;}
+{Ident}		{column = column + strlen(yytext); yylval.char_val = new std:string(yytext); return IDENT;}
 
 {Error1}	{printf("Error at line %d, column %d: Identifier \"%s\" must begin with a letter\n", row, column, yytext); column = column + strlen(yytext); exit(1);}
 {Error2}	{printf("Error at line %d, column %d: Identifier \"%s\" cannot end with an underscore\n", row, column, yytext); column = column + strlen(yytext); exit(1);}
