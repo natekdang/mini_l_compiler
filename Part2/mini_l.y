@@ -48,7 +48,7 @@ function2:
 ; 
 
 declaration: 
-	IDENT declaration1 COLON declaration2 INTEGER 		{printf("declaration -> IDENT declaration1 COLON declaration2 INTEGER\n");}
+	IDENT declaration1 COLON declaration2 INTEGER 		{printf("declaration -> IDENT %s declaration1 COLON declaration2 INTEGER\n", $1);}
 ;
 
 declaration1: 
@@ -58,7 +58,7 @@ declaration1:
 
 declaration2: 
 	/* empty */												{printf("declaration2 -> epsilon\n");}
-|	ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF 		{printf("declaration2 -> ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF\n");}					
+|	ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF 		{printf("declaration2 -> ARRAY L_SQUARE_BRACKET NUMBER %d R_SQUARE_BRACKET OF\n", $3);}					
 ;
 
 statement: 
@@ -99,7 +99,7 @@ bool_expr1:
 ;
 
 relation_and_expr: 
-|	relation_expr relation_and_expr1			{printf("relation_and_expr -> relation_expr relation_and_expr1\n");}
+	relation_expr relation_and_expr1			{printf("relation_and_expr -> relation_expr relation_and_expr1\n");}
 ;
 
 relation_and_expr1:
@@ -109,7 +109,7 @@ relation_and_expr1:
 
 relation_expr:
 	relation_expr1								{printf("relation_expr -> relation_expr1\n");}
-|	NOT relation_and_expr1						{printf("relation_expr -> NOT relation_and_expr1\n");}
+|	NOT relation_expr1						{printf("relation_expr -> NOT relation_and_expr1\n");}
 ;
 
 relation_expr1: 
@@ -152,12 +152,12 @@ multiplicative_expr1:
 term:
 	term1										{printf("term -> term1\n");}
 |	SUB term1									{printf("term -> SUB term1\n");}
-|	IDENT L_PAREN term2 R_PAREN					{printf("term -> IDENT L_PAREN term2 R_PAREN\n");}
+|	IDENT L_PAREN term2 R_PAREN					{printf("term -> IDENT %s L_PAREN term2 R_PAREN\n", $1);} 
 ;
 
 term1:
 	var											{printf("term1 -> var\n");}
-|	NUMBER										{printf("term1 -> NUMBER\n");}
+|	NUMBER										{printf("term1 -> NUMBER %d\n", $1);}
 |	L_PAREN expression R_PAREN					{printf("term1 -> L_PAREN expression R_PAREN\n");}
 ;
 
@@ -172,8 +172,8 @@ term3:
 ;
 
 var:
-	IDENT 												{printf("var -> IDENT var1\n");}
-|	IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET 	{printf("var -> IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET\n");}
+	IDENT 												{printf("var -> IDENT %s var1\n", $1);}
+|	IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET 	{printf("var -> IDENT %s L_SQUARE_BRACKET expression R_SQUARE_BRACKET\n", $1);}
 ;
 
 %%
