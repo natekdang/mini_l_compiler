@@ -35,7 +35,7 @@ function:
 
 function1: 
 	/* empty */ 									{printf("function1 -> epsilon\n");}
-| 	declaration	SEMICOLON function1 function1		{printf("function1 -> declaration SEMICOLON function1\n");}
+| 	declaration	SEMICOLON function1					{printf("function1 -> declaration SEMICOLON function1\n");}
 ; 
 
 function2: 
@@ -86,8 +86,7 @@ statement3:
 ;
 
 bool_expr:
-	/* empty */									{printf("bool_expr -> epsilon\n");}
-|	relation_and_expr bool_expr1				{printf("bool_expr -> relation_and_expr bool_expr1\n");}
+	relation_and_expr bool_expr1				{printf("bool_expr -> relation_and_expr bool_expr1\n");}
 ;
 
 bool_expr1: 
@@ -96,7 +95,6 @@ bool_expr1:
 ;
 
 relation_and_expr: 
-	/* empty */									{printf("relation_and_expr -> epsilon\n");}
 |	relation_expr relation_and_expr1			{printf("relation_and_expr -> relation_expr relation_and_expr1\n");}
 ;
 
@@ -170,8 +168,8 @@ term3:
 ;
 
 var:
-	IDENT													{printf("var -> IDENT\n");}
-|	IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET		{printf("var -> IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET\n");}
+	IDENT 												{printf("var -> IDENT var1\n");}
+|	IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET 	{printf("var -> IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET"\n);}
 ;
 
 %%
