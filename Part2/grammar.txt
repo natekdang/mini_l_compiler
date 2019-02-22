@@ -1,44 +1,59 @@
 Program:
-
-	Program -> function
-	function -> Function function | empty
+Program -> function
+function -> Function function | empty
 
 Function:
-	
-	Function -> "function"  
+Function -> FUNCTION IDENT SEMICOLLON BEGIN_PARAMS Function' 	END_PARAMS BEGIN_LOCALS Function' END_LOCALS BEGIN_BODY 	Statement SEMICOLON Function'' END_BODY
+Function' -> Declaration SEMICOLON Function' | empty 
+Function'' -> Statement SEMICOLON Function'' | empty 
+
+Declaration:
+Declaration -> IDENT Declaration' COLON Declaration'' INTEGER 
+Declaration' -> COMMA IDENT Declaration' | empty
+Declaration'' -> ARRAY L_SQUARE_BRACKET NUMBER 	R_SQUARE_BRACKET 	OF | empty 
+
+Statement: 
+Statement -> Var ASSIGN Expression
+Statement -> IF Bool-Expr THEN Statement SEMICOLON Statement' 	ENDIF ;
+Statement -> WHILE Bool-Expr BEGINLOOP Statement SEMICOLON 	Statement'' ENDLOOP
+Statement -> DO BEGINLOOP Statement SEMICOLON Statement'' 	ENDLOOP WHILE Bool-Expr
+Statement -> READ Var Statement'''
+Statement -> WRITE Var Statement'''
+Statement -> CONTINUE
+Statement -> RETURN Expression 
+Statement' -> Statement SEMICOLON Statement' | ELSE Statement 	SEMICOLON Statement'' | empty
+Statement'' -> Statement SEMICOLON Statement'' | empty
+Statement''' -> COMMA Var Statement''' | empty
+
+Bool-Expr:
+Bool-Expr -> Relation-And-Expr Bool-Expr'
+Bool-Expr' -> OR Relation-And-Expr Bool-Expr' | empty
+
+Relation-And-Expr:
+Relation-And-Expr -> Relation-Expr Relation-And-Expr'
+Relation-And-Expr' -> AND Relation-Expr Relation-And-Expr' | empty
+
+Relation-Expr: 
+Relation-Expr -> Relation-Expr' | NOT Relation-Expr'
+Relation-Expr' -> Expression Comp Expression | TRUE | FALSE | 	L_PAREN Bool-Expr R_PAREN 
+
+Comp:
+Comp -> EQ | NEQ | LT | GT | LTE | GTE 
+
+Expression:
+Expression -> Multiplicative-Expr Expression'
+Expression' -> ADD Multiplicative-Expr Expression' | SUB 	Multiplicative-Expr Expression' | empty
+
+Multiplicative-Expr:
+Multiplicative-Expr -> Term Multiplicative-Expr'
+Multiplicative-Expr' -> MULT Term Multiplicative-Expr' | DIV 	Term Multiplicative-Expr' | MOD Term Multiplicative-Expr' 	| empty
+
+Term:
+Term -> Term' | SUB Term' | IDENT L_PAREN Term'' R_PAREN
+Term' -> Var | NUMBER | L_PAREN Expression R_PAREN
+Term'' -> Expression Term''' | empty
+Term''' -> COMMA Term'' | empty
 
 
-Declaration
-
-
-
-Statement
-
-
-Bool-Expr
-
-
-Relation-And-Expr
-
-
-
-
-Relation-Expr
-
-
-Comp
-
-
-Expression
-
-
-
-Multiplicative-Expr
-
-
-
-
-Term
-
-
-Var 
+Var:
+Var -> IDENT | IDENT L_SQUARE_BRACKET Expression 	R_SQUARE_BRACKET   
