@@ -4,8 +4,6 @@
  */
 
 %{
-	#include <stdio.h>
-	#include <stdlib.h>
 	#include "y.tab.h"
 							/* put YYSTYPE here for now, doesn't work in .y */
 	YYSTYPE yylval;

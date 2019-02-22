@@ -1,7 +1,9 @@
 %{
  #include <stdio.h>
  #include <stdlib.h>
- void yyerror(char *s);
+ void yyerror(const char *s);
+ extern int row; 
+ extern int column;
  int yylex(void);
  FILE* yyin;
 %}
@@ -193,10 +195,8 @@ int main (const int argc, const char** argv)
 }
 
 
-void yyerror(char* s)
+void yyerror(const char* s)
 {
-  extern int row, column;	// defined and maintained in lex.c
-
   printf("syntax error at line %d column %d: %s\n", row, column, s);
 }
 
