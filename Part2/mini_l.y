@@ -1,12 +1,14 @@
 %{
- #include "heading.h"
- int yyerror(char *s);
+ #include <stdio.h>
+ #include <stdlib.h>
+ void yyerror(char *s);
  int yylex(void);
+ FILE* yyin;
 %}
 
 %union{
 	int 		int_val;
-	string* 	string_val;
+	char* 		char_val;
 }
 
 %error-verbose 
@@ -60,9 +62,9 @@ declaration2:
 statement: 
 	/* empty */																{printf("statement -> epsilon\n");}
 | 	var ASSIGN expression 													{printf("statement -> var ASSIGN expression\n");}
-| 	IF bool_expr THEN statement SEMICOLON statement1 ENDIF					{printf("statement -> IF bool-expr THEN statement SEMICOLON statement1 ENDIF\n");}
-| 	WHILE bool_expr BEGINLOOP statement SEMICOLON statement2 ENDLOOP		{printf("statement -> WHILE bool-expr BEGINLOOP statement SEMICOLON statement2 ENDLOOP\n");}	
-| 	DO BEGINLOOP statement SEMICOLON statement2 ENDLOOP WHILE bool_expr 	{printf("statement -> DO BEGINLOOP statement SEMICOLON statement2 ENDLOOP WHILE bool-expr\n");}
+| 	IF bool_expr THEN statement SEMICOLON statement1 ENDIF					{printf("statement -> IF bool_expr THEN statement SEMICOLON statement1 ENDIF\n");}
+| 	WHILE bool_expr BEGINLOOP statement SEMICOLON statement2 ENDLOOP		{printf("statement -> WHILE bool_expr BEGINLOOP statement SEMICOLON statement2 ENDLOOP\n");}	
+| 	DO BEGINLOOP statement SEMICOLON statement2 ENDLOOP WHILE bool_expr 	{printf("statement -> DO BEGINLOOP statement SEMICOLON statement2 ENDLOOP WHILE bool_expr\n");}
 |	READ var statement3														{printf("statement -> READ var statement3\n");}
 |	WRITE var statement3													{printf("statement -> WRITE var statement3\n");}
 |	CONTINUE																{printf("statement -> CONTINUE\n");}
@@ -169,25 +171,36 @@ term3:
 
 var:
 	IDENT 												{printf("var -> IDENT var1\n");}
-|	IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET 	{printf("var -> IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET"\n);}
+|	IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET 	{printf("var -> IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET\n");}
 ;
 
 %%
 
+int main (const int argc, const char** argv)
+{
+	if (argc > 1)
+	{
+		yyin = fopen(argv[1], "r");
+		if (yyin == NULL)
+		{
+			printf("syntax: %s filename\n", argv[0]);
+			exit(1);
+		}
+	}
 
-int yyerror(string s)
+	yyparse();
+	return 0;
+}
+
+
+void yyerror(char* s)
 {
   extern int row, column;	// defined and maintained in lex.c
 
-  cerr << "Syntax error at line " << row << " position " << column << ": " << s << endl;
-
-  exit(1);
+  printf("syntax error at line %d column %d: %s\n", row, column, s);
 }
 
-int yyerror(char *s)
-{
-  return yyerror(string(s));
-}
+
 
 		
 
