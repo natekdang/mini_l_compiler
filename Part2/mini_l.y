@@ -2,13 +2,12 @@
  #include "heading.h"
  int yyerror(char *s);
  int yylex(void);
- YYSTYPE yylval; 
 %}
 
 %union{
-	int int_val;
-	char* char_val
-}%
+	int 		int_val;
+	string* 	string_val;
+}
 
 %error-verbose 
 %start program
@@ -31,7 +30,7 @@ program:
 ;	
 
 function:
-	FUNCTION IDENT SEMICOLON BEGIN_PARAMS function1 END_PARAMS BEGIN_LOCALS function1 ENDLOCALS BEGINBODY statement SEMICOLON function2 END_BODY	{printf("function -> FUNCTION IDENT SEMICOLON BEGIN_PARAMS function1 END_PARAMS BEGIN_LOCALS function1 ENDLOCALS BEGINBODY statement SEMICOLON function2 END_BODY\n");}
+	FUNCTION IDENT SEMICOLON BEGIN_PARAMS function1 END_PARAMS BEGIN_LOCALS function1 END_LOCALS BEGIN_BODY statement SEMICOLON function2 END_BODY	{printf("function -> FUNCTION IDENT SEMICOLON BEGIN_PARAMS function1 END_PARAMS BEGIN_LOCALS function1 END_LOCALS BEGIN_BODY statement SEMICOLON function2 END_BODY\n");}
 ;
 
 function1: 
@@ -45,7 +44,7 @@ function2:
 ; 
 
 declaration: 
-	IDENT declaration1 COLON declaration1 INTEGER 		{printf("declaration -> IDENT declaration1 COLON declaration2 INTEGER\n");}
+	IDENT declaration1 COLON declaration2 INTEGER 		{printf("declaration -> IDENT declaration1 COLON declaration2 INTEGER\n");}
 ;
 
 declaration1: 
@@ -61,9 +60,9 @@ declaration2:
 statement: 
 	/* empty */																{printf("statement -> epsilon\n");}
 | 	var ASSIGN expression 													{printf("statement -> var ASSIGN expression\n");}
-| 	IF bool-expr THEN statement SEMICOLON statement1 ENDIF					{printf("statement -> IF bool-expr THEN statement SEMICOLON statement1 ENDIF\n");}
-| 	WHILE bool-expr BEGINLOOP statement SEMICOLON statement2 ENDLOOP		{printf("statement -> WHILE bool-expr BEGINLOOP statement SEMICOLON statement2 ENDLOOP\n");}	
-| 	DO BEGINLOOP statement SEMICOLON statement2 ENDLOOP WHILE bool-expr 	{printf("statement -> DO BEGINLOOP statement SEMICOLON statement2 ENDLOOP WHILE bool-expr\n");}
+| 	IF bool_expr THEN statement SEMICOLON statement1 ENDIF					{printf("statement -> IF bool-expr THEN statement SEMICOLON statement1 ENDIF\n");}
+| 	WHILE bool_expr BEGINLOOP statement SEMICOLON statement2 ENDLOOP		{printf("statement -> WHILE bool-expr BEGINLOOP statement SEMICOLON statement2 ENDLOOP\n");}	
+| 	DO BEGINLOOP statement SEMICOLON statement2 ENDLOOP WHILE bool_expr 	{printf("statement -> DO BEGINLOOP statement SEMICOLON statement2 ENDLOOP WHILE bool-expr\n");}
 |	READ var statement3														{printf("statement -> READ var statement3\n");}
 |	WRITE var statement3													{printf("statement -> WRITE var statement3\n");}
 |	CONTINUE																{printf("statement -> CONTINUE\n");}
@@ -112,10 +111,10 @@ relation_expr:
 ;
 
 relation_expr1: 
-	/* empty */									{printf("relation_expr1 -> epsilon\n");}
+	expression comp expression					{printf("relation_expr1 -> expression comp expression\n");}
 |	TRUE										{printf("relation_expr1 -> TRUE\n");}
 |	FALSE										{printf("relation_expr1 -> FALSE\n");}
-|	L_PAREN bool_expr R_PAREN 					{printf("relation_expr1 -> L_PAREN bool_expr R_PAREN"\n);}
+|	L_PAREN bool_expr R_PAREN 					{printf("relation_expr1 -> L_PAREN bool_expr R_PAREN\n");}
 ;
 
 comp: 
@@ -181,8 +180,9 @@ var:
 int yyerror(string s)
 {
   extern int row, column;	// defined and maintained in lex.c
-  
-  cerr << "Syntax error at line "<< row << " position " << column << ": " << s << endl;
+
+  cerr << "Syntax error at line " << row << " position " << column << ": " << s << endl;
+
   exit(1);
 }
 

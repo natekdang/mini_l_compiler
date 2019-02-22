@@ -4,7 +4,10 @@
  */
 
 %{
-	#include <string.h>
+	#include "heading.h"
+	#include "tok.h"
+							/* put YYSTYPE here for now, doesn't work in .y */
+	YYSTYPE yylval;
 	int row = 1;
 	int column = 1; 
 %}
@@ -17,7 +20,7 @@ Underscore [_]
 Comment "##".*
 Ident {Letter}((({Letter}|{Digit})|{Underscore})*({Letter}|{Digit})+)*
 
-Error1 {Digit|Underscore}+{Letter}((({Letter}|{Digit})|{Underscore})*({Letter}|{Digit})+)*
+Error1 ({Digit}|{Underscore})+{Letter}((({Letter}|{Digit})|{Underscore})*({Letter}|{Digit})+)*
 Error2 {Letter}((({Letter}|{Digit})|{Underscore})*({Letter}|{Digit})+)*{Underscore}+
 
 
@@ -33,7 +36,7 @@ Error2 {Letter}((({Letter}|{Digit})|{Underscore})*({Letter}|{Digit})+)*{Undersco
 function	{column = column + strlen(yytext); return FUNCTION;}
 beginparams	{column = column + strlen(yytext); return BEGIN_PARAMS;}
 endparams	{column = column + strlen(yytext); return END_PARAMS;}
-beginlocals	{column = column + strlen(yytext); return BEGIN_LOCALS; 
+beginlocals	{column = column + strlen(yytext); return BEGIN_LOCALS;} 
 endlocals	{column = column + strlen(yytext); return END_LOCALS;}
 beginbody	{column = column + strlen(yytext); return BEGIN_BODY;}
 endbody		{column = column + strlen(yytext); return END_BODY;}
@@ -90,8 +93,7 @@ return		{column = column + strlen(yytext); return RETURN;}
 
 {Comment}	{row = row + 1; column = 1;}
 {Number} 	{column = column + strlen(yytext); yylval.int_val = atoi(yytext); return NUMBER;}
-{Ident}		{column = column + strlen(yytext); yylval.char_val = new std:string(yytext); return IDENT;}
-
+{Ident}		{column = column + strlen(yytext); yylval.string_val = new std::string(yytext); return IDENT;}
 {Error1}	{printf("Error at line %d, column %d: Identifier \"%s\" must begin with a letter\n", row, column, yytext); column = column + strlen(yytext); exit(1);}
 {Error2}	{printf("Error at line %d, column %d: Identifier \"%s\" cannot end with an underscore\n", row, column, yytext); column = column + strlen(yytext); exit(1);}
 .			{printf("Error at line %d, column %d: unrecognized symbol \"%s\"\n", row, column, yytext); exit(1);} 
