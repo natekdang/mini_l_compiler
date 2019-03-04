@@ -4,8 +4,7 @@
  */
 
 %{
-	#include "heading.h"
-	#include "tok.h"
+	#include "y.tab.h"
 							/* put YYSTYPE here for now, doesn't work in .y */
 	YYSTYPE yylval;
 	int row = 1;
@@ -93,7 +92,7 @@ return		{column = column + strlen(yytext); return RETURN;}
 
 {Comment}	{row = row + 1; column = 1;}
 {Number} 	{column = column + strlen(yytext); yylval.int_val = atoi(yytext); return NUMBER;}
-{Ident}		{column = column + strlen(yytext); yylval.string_val = new std::string(yytext); return IDENT;}
+{Ident}		{column = column + strlen(yytext); yylval.char_val = strdup(yytext); return IDENT;}
 {Error1}	{printf("Error at line %d, column %d: Identifier \"%s\" must begin with a letter\n", row, column, yytext); column = column + strlen(yytext); exit(1);}
 {Error2}	{printf("Error at line %d, column %d: Identifier \"%s\" cannot end with an underscore\n", row, column, yytext); column = column + strlen(yytext); exit(1);}
 .			{printf("Error at line %d, column %d: unrecognized symbol \"%s\"\n", row, column, yytext); exit(1);} 
